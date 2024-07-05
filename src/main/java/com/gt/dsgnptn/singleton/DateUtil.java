@@ -2,9 +2,9 @@ package com.gt.dsgnptn.singleton;
 
 import java.io.Serializable;
 
-public class DateUtil  implements Serializable {
+public class DateUtil implements Serializable {
 
-    private static DateUtil instance;
+    private static volatile DateUtil instance; //volatile to let other threads know that the value of instance variable will change
 
     /*static {
         instance = new DateUtil();
@@ -13,13 +13,13 @@ public class DateUtil  implements Serializable {
     private DateUtil() {
     }
 
-    serializable(if (instance == null)) {
-        public static DateUtil getInstance () {
+    public static DateUtil getInstance() {
+        synchronized (DateUtil.class) { // synchronized block to stop parallel threads to create multiple instances
             if (instance == null) {
                 instance = new DateUtil();
 
             }
-            return instance;
         }
+        return instance;
     }
 }
