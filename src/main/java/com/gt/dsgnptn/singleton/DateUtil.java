@@ -2,24 +2,24 @@ package com.gt.dsgnptn.singleton;
 
 import java.io.Serializable;
 
-public class DateUtil  implements Serializable {
+public class DateUtil implements Serializable {
 
-    private static DateUtil instance;
+    private static volatile DateUtil instance; // = new DateUtil(); Eager Initialisation. Objects get created when application loads up.
+    // Volatile keyword is used to make sure that the instance variable is not cached and multiple threads can see the updated value
 
-    /*static {
-        instance = new DateUtil();
+    /*static {                         //Static Initialization
+        instance = new DateUtil();     //Static or Eager Initialization would create objects irrespective of whether it is required or not
     }*/
 
-    private DateUtil() {
+    private DateUtil() {        //Private Constructor to prevent other classes from creating DateUtil instance as this should be only instance creation
     }
 
-    serializable(if (instance == null)) {
-        public static DateUtil getInstance () {
+    public static DateUtil getInstance() {
+        synchronized (DateUtil.class) {      //Synchronized block to make sure only one thread can create instance at a time
             if (instance == null) {
                 instance = new DateUtil();
-
             }
-            return instance;
         }
+        return instance;
     }
 }
